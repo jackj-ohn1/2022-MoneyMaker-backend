@@ -12,7 +12,7 @@ import (
 
 //@Summary "商家下架商品"
 //@Description "下架商品的api"
-//@Tags Delete
+//@Tags Good
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"

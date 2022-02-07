@@ -11,7 +11,7 @@ import (
 
 //@Summary "查询某个商品的详细信息"
 //@Description "点击进入商品详情页的api"
-//@Tags Scan
+//@Tags Good
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"

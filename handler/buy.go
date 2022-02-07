@@ -11,7 +11,7 @@ import (
 
 //@Summary "用户进行购买"
 //@Description "点击购买时的api"
-//@Tags Buy
+//@Tags Good
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"

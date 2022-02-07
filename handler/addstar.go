@@ -12,7 +12,7 @@ import (
 
 //@Summary "新增收藏"
 //@Description "添加至购物车时的api"
-//@Tags Add
+//@Tags Star
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品的编号"

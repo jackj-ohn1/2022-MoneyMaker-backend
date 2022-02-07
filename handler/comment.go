@@ -80,7 +80,7 @@ func Getcomment(c *gin.Context) {
 
 //@Summary "用户对某个商品的评论"
 //@Description "用户做出评价，点击评价时的api"
-//@Tags Givecomment
+//@Tags Comment
 //@Accept application/json
 //@Produce application/json
 //@Param comment body Description true "评论"

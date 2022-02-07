@@ -18,7 +18,7 @@ type Two struct {
 
 //@Summary "返回用户与卖家未完成的订单"
 //@Description "返回订单,需要点完成的是‘my sell’->[]string 是与我做交易的人的id,因为一个商品可能被多个人购买，所以string切片的长度就是‘完成订单’的订单数,点评价的是‘my buy’"
-//@Tags return trade
+//@Tags Trade
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"success","my buy":[]tables.Good,"my sell":[]Two}
@@ -74,7 +74,7 @@ func UnFinish(c *gin.Context) {
 
 //@Summary "商家完成订单"
 //@Description "点击确认完成时的api"
-//@Tags Finish trade
+//@Tags Trade
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"

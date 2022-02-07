@@ -10,7 +10,7 @@ import (
 
 //@Summary "返回用户购买、收藏后的信息"
 //@Description "信息已根据时间按升序排列，id越大越新，消息通知的api"
-//@Tags Return Message
+//@Tags Message
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"success","infor":[]tables.Message}

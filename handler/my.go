@@ -13,7 +13,7 @@ import (
 
 //@Summary "查看我的橱窗"
 //@Description "橱窗"
-//@Tags MYgoods
+//@Tags My
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"check successfully","infot":[]tables.Good}
@@ -40,7 +40,7 @@ func Mygoods(c *gin.Context) {
 
 //@Summary "查看我的购物车"
 //@Description "购物车"
-//@Tags MYCart
+//@Tags My
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"check successfully","infot":[]tables.Good}
@@ -88,7 +88,7 @@ func Mycart(c *gin.Context) {
 
 //@Summary "返回我的信息"
 //@Description "我的个人信息的api"
-//@Tags Message
+//@Tags My
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"avatar 是头像对应的url","infor":tables.User}

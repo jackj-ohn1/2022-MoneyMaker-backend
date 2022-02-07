@@ -83,7 +83,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Goods"
+                    "Good"
                 ],
                 "summary": "\"上架商品\"",
                 "parameters": [
@@ -156,7 +156,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Givecomment"
+                    "Comment"
                 ],
                 "summary": "\"用户对某个商品的评论\"",
                 "parameters": [
@@ -241,7 +241,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Delete"
+                    "Good"
                 ],
                 "summary": "\"商家下架商品\"",
                 "parameters": [
@@ -279,7 +279,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Feedback"
+                    "Good"
                 ],
                 "summary": "\"接收举报\"",
                 "parameters": [
@@ -324,7 +324,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Scan"
+                    "Good"
                 ],
                 "summary": "\"查询某个商品的详细信息\"",
                 "parameters": [
@@ -362,7 +362,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Buy"
+                    "Good"
                 ],
                 "summary": "\"用户进行购买\"",
                 "parameters": [
@@ -400,7 +400,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Homepage"
+                    "Good"
                 ],
                 "summary": "\"主页内容\"",
                 "parameters": [
@@ -438,7 +438,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Return Message"
+                    "Message"
                 ],
                 "summary": "\"返回用户购买、收藏后的信息\"",
                 "responses": {
@@ -464,7 +464,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Cancel"
+                    "Star"
                 ],
                 "summary": "\"取消收藏\"",
                 "parameters": [
@@ -502,7 +502,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "MYCart"
+                    "My"
                 ],
                 "summary": "\"查看我的购物车\"",
                 "responses": {
@@ -537,7 +537,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "MYgoods"
+                    "My"
                 ],
                 "summary": "\"查看我的橱窗\"",
                 "responses": {
@@ -566,7 +566,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Finish trade"
+                    "Trade"
                 ],
                 "summary": "\"商家完成订单\"",
                 "parameters": [
@@ -601,7 +601,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "return trade"
+                    "Trade"
                 ],
                 "summary": "\"返回用户与卖家未完成的订单\"",
                 "responses": {
@@ -630,7 +630,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Message"
+                    "My"
                 ],
                 "summary": "\"返回我的信息\"",
                 "responses": {
@@ -659,7 +659,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Add"
+                    "Star"
                 ],
                 "summary": "\"新增收藏\"",
                 "parameters": [
@@ -697,7 +697,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Search"
+                    "Good"
                 ],
                 "summary": "\"搜索并返回已排序的商品信息\"",
                 "parameters": [

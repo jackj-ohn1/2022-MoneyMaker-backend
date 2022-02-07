@@ -11,7 +11,7 @@ import (
 
 //@Summary "主页内容"
 //@Description "order=1->返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api"
-//@Tags Homepage
+//@Tags Good
 //@Accept application/json
 //@Produce application/json
 //@Param page query string true "页码"

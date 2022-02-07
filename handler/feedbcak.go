@@ -13,7 +13,7 @@ import (
 //举报
 //@Summary "接收举报"
 //@Description "举报的api"
-//@Tags Feedback
+//@Tags Good
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"

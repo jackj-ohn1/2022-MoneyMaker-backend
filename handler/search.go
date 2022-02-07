@@ -12,7 +12,7 @@ import (
 
 //@Summary "搜索并返回已排序的商品信息"
 //@Description "order=1->返回前十个商品的内容，summary不需要展示出来-》在商品详情页里,搜索的api"
-//@Tags Search
+//@Tags Good
 //@Accept application/json
 //@Produce application/json
 //@Param content formData string true "搜索框输入的内容"

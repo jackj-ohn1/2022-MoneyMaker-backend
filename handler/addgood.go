@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
@@ -21,7 +22,7 @@ type Tmp struct {
 
 //@Summary "上架商品"
 //@Description "新增一个商品时的api"
-//@Tags Goods
+//@Tags Good
 //@Accept multipart/form-data
 //@Produce application/json
 //@Param title formData string true "标题"
@@ -51,7 +52,7 @@ func Addgood(c *gin.Context) {
 	//err := mysql.DB.Model(&tables.Good{}).Last(&good1).Error
 	good1, err := model.GetLastRecord()
 
-	summary := c.PostForm("title")
+	summary := c.PostForm("summary")
 	zone := c.PostForm("zone")
 	price := c.PostForm("price")
 	title := c.PostForm("title")
@@ -65,6 +66,7 @@ func Addgood(c *gin.Context) {
 	good2.ID = stuid
 	//获取到当前的最大值之后再加一即可
 	good2.GoodsID = good1.GoodsID + 1
+	fmt.Println(good1.GoodsID, good2.GoodsID)
 
 	//存放图片到本地
 	oka := upload.UploadAvatar(c, good2.GoodsID)

@@ -12,7 +12,7 @@ import (
 
 //@Summary "取消收藏"
 //@Description "在购物车里取消收藏的api"
-//@Tags Cancel
+//@Tags Star
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"

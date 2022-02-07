@@ -110,7 +110,7 @@ paths:
             type: string
       summary: '"上架商品"'
       tags:
-      - Goods
+      - Good
   /money/goods/comment:
     post:
       consumes:
@@ -141,7 +141,7 @@ paths:
             type: string
       summary: '"用户对某个商品的评论"'
       tags:
-      - Givecomment
+      - Comment
   /money/goods/comments:
     get:
       consumes:
@@ -191,7 +191,7 @@ paths:
             type: string
       summary: '"商家下架商品"'
       tags:
-      - Delete
+      - Good
   /money/goods/feedback:
     post:
       consumes:
@@ -221,7 +221,7 @@ paths:
             type: string
       summary: '"接收举报"'
       tags:
-      - Feedback
+      - Good
   /money/goods/scanning:
     get:
       consumes:
@@ -246,7 +246,7 @@ paths:
             type: string
       summary: '"查询某个商品的详细信息"'
       tags:
-      - Scan
+      - Good
   /money/goods/shopping:
     get:
       consumes:
@@ -271,7 +271,7 @@ paths:
             type: string
       summary: '"用户进行购买"'
       tags:
-      - Buy
+      - Good
   /money/homepage:
     get:
       consumes:
@@ -296,7 +296,7 @@ paths:
             type: string
       summary: '"主页内容"'
       tags:
-      - Homepage
+      - Good
   /money/message:
     get:
       consumes:
@@ -313,7 +313,7 @@ paths:
           description: error happened
       summary: '"返回用户购买、收藏后的信息"'
       tags:
-      - Return Message
+      - Message
   /money/my/cancellation:
     post:
       consumes:
@@ -338,7 +338,7 @@ paths:
             type: string
       summary: '"取消收藏"'
       tags:
-      - Cancel
+      - Star
   /money/my/cart:
     get:
       consumes:
@@ -361,7 +361,7 @@ paths:
             type: string
       summary: '"查看我的购物车"'
       tags:
-      - MYCart
+      - My
   /money/my/goods:
     get:
       consumes:
@@ -380,7 +380,7 @@ paths:
             type: string
       summary: '"查看我的橱窗"'
       tags:
-      - MYgoods
+      - My
   /money/my/goods/finish:
     get:
       consumes:
@@ -403,7 +403,7 @@ paths:
           description: error happened
       summary: '"商家完成订单"'
       tags:
-      - Finish trade
+      - Trade
   /money/my/goods/unfish:
     get:
       consumes:
@@ -423,7 +423,7 @@ paths:
             type: string
       summary: '"返回用户与卖家未完成的订单"'
       tags:
-      - return trade
+      - Trade
   /money/my/message:
     get:
       consumes:
@@ -442,7 +442,7 @@ paths:
             type: string
       summary: '"返回我的信息"'
       tags:
-      - Message
+      - My
   /money/new_star:
     patch:
       consumes:
@@ -467,7 +467,7 @@ paths:
             type: string
       summary: '"新增收藏"'
       tags:
-      - Add
+      - Star
   /money/search:
     post:
       consumes:
@@ -497,7 +497,7 @@ paths:
             type: string
       summary: '"搜索并返回已排序的商品信息"'
       tags:
-      - Search
+      - Good
 schemes:
 - http
 swagger: "2.0"
