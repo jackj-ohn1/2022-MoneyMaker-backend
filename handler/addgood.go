@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
@@ -66,7 +65,7 @@ func Addgood(c *gin.Context) {
 	good2.ID = stuid
 	//获取到当前的最大值之后再加一即可
 	good2.GoodsID = good1.GoodsID + 1
-	fmt.Println(good1.GoodsID, good2.GoodsID)
+	//fmt.Println(good1.GoodsID, good2.GoodsID)
 
 	//存放图片到本地
 	oka := upload.UploadAvatar(c, good2.GoodsID)
@@ -92,8 +91,8 @@ func Addgood(c *gin.Context) {
 	good2.Title = title
 
 	//直接存url
-	good2.Avatar = "localhost:8080/images/avatar/" + strconv.Itoa(good2.GoodsID) + ".jpg"
-	good2.Way = "localhost:8080/images/way/" + strconv.Itoa(good2.GoodsID) + ".jpg"
+	good2.Avatar = "119.3.133.235:8080/images/avatar/" + strconv.Itoa(good2.GoodsID) + ".jpg"
+	good2.Way = "119.3.133.235:8080/images/way/" + strconv.Itoa(good2.GoodsID) + ".jpg"
 	good2.Goodsin = "yes"
 
 	mysql.DB.Model(&tables.Good{}).Create(&good2)

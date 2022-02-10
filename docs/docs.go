@@ -42,7 +42,7 @@ var doc = `{
                 "summary": "\"用户登录\"",
                 "parameters": [
                     {
-                        "description": "用户信息",
+                        "description": "id 学号 password 密码进行base64加密后的字符串",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -59,7 +59,7 @@ var doc = `{
                         }
                     },
                     "401": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"unauthorization\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -292,8 +292,8 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "原因，多个reason以逗号隔开",
-                        "name": "reason",
+                        "description": "原因 只需上传用户勾选的个数 内容不需要",
+                        "name": "reasonNum",
                         "in": "formData",
                         "required": true
                     }

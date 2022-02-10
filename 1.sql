@@ -8,7 +8,8 @@ CREATE TABLE users(
     id VARCHAR(10) PRIMARY KEY,
     nickname VARCHAR(20),
     avatar VARCHAR(100),
-    buygoods TEXT
+    buygoods TEXT,
+    password VARCHAR(20)
 );
 
 CREATE TABLE goods(

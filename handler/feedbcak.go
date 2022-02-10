@@ -17,7 +17,7 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
-//@Param reason formData string true "原因，多个reason以逗号隔开"
+//@Param reasonNum formData string true "原因 只需上传用户勾选的个数 内容不需要"
 //@Success 200 {string} json{"msg":"举报成功!"}
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/goods/feedback [post]
@@ -25,17 +25,19 @@ func Feedback(c *gin.Context) {
 	var good tables.Good
 	goodsstr := c.Query("goodsid")
 	goodsid := easy.STI(goodsstr)
-	_ = c.PostForm("reason")
+
+	resonNum := c.PostForm("reasonNum")
+	num := easy.STI(resonNum)
 
 	//mysql.DB.Select("feed_back").Where("goods_id=?", goodsid).Find(&good)
 	good = model.GetOrderGood(goodsid)
 
-	if goodsid == -1 {
+	if goodsid == -1 && num == -1 {
 		response.SendResponse(c, "error happened", 500)
 		return
 	}
 
-	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("feed_back", good.FeedBack+1)
+	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("feed_back", good.FeedBack+num)
 
 	response.SendResponse(c, "举报成功", 200)
 }

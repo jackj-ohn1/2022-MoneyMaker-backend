@@ -122,21 +122,22 @@ func Givecomment(c *gin.Context) {
 	//更新商品的平均分,得在创建一条新评论之后
 	mysql.DB.Select("score").Where("goods_id=?", goodsid).Find(&re)
 
-	if str := Average(c, re, goodsid); str != "" {
-		//fmt.Println("3", str)
+	if ok := Average(c, re, goodsid); !ok {
+
 		response.SendResponse(c, "error happened", 500)
+
 		return
 	}
 
 	response.SendResponse(c, "give successfully", 200)
 }
 
-func Average(c *gin.Context, re []tables.Comment, goodsid string) string {
+func Average(c *gin.Context, re []tables.Comment, goodsid string) bool {
 	var good tables.Good
 	var sum = 0
 	id := easy.STI(goodsid)
 	if id == -1 {
-		return "error"
+		return true
 	}
 	if len(re) == 0 {
 		good.Scores = 0
@@ -147,5 +148,5 @@ func Average(c *gin.Context, re []tables.Comment, goodsid string) string {
 	good.Scores = float64(sum) / float64(len(re))
 
 	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", id).Update("scores", good.Scores)
-	return ""
+	return false
 }

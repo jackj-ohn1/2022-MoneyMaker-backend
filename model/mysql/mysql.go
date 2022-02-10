@@ -36,10 +36,6 @@ var DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 func Init() {
 
-	//fmt.Println(dsn)
-
-	//新建一个空的通知，id的大小可以分辨出其时间先后
-
 	if err != nil {
 		fmt.Println("Init err!", err)
 		return
@@ -60,7 +56,7 @@ func Init() {
 }
 
 //登录成功初始化这个用户的信息
-func Create(id string, name string) {
+func Create(id string, name string, psd string) {
 	var user tables.User
 	//不存在就会报错
 	DB.Where("id=?", id).Find(&user)
@@ -71,6 +67,7 @@ func Create(id string, name string) {
 			"avatar":   avatar, //随机分配头像
 			"nickname": name,
 			"buygoods": "",
+			"password": psd,
 		})
 
 		//新建一个空的购物车

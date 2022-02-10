@@ -24,7 +24,7 @@ func UploadAvatar(c *gin.Context, goodsid int) bool {
 	//fmt.Println(file, err, filename)
 	//以goodsid作为名字
 	way = "./goods/avatar" + strconv.Itoa(goodsid) + ".jpg"
-	tmp, err := os.Create(way)
+	tmp, err := os.Create(way) //如果文件已存在会清空
 
 	if err != nil {
 		fmt.Println(err)

@@ -21,6 +21,7 @@ import (
 func Scan(c *gin.Context) {
 	var good tables.Good
 	var user tables.User
+	var msg = ""
 
 	goodsidstr := c.Query("goodsid")
 	goodsid := easy.STI(goodsidstr)
@@ -38,10 +39,14 @@ func Scan(c *gin.Context) {
 	//mysql.DB.Model(&tables.User{}).Where("id=?", good.ID).Find(&user)
 
 	user = model.GetOrderUser(good.ID)
+	if good.FeedBack >= 100 {
+		msg = "该商品被举报次数过多,请谨慎交易!"
+	}
+
 	user.Buygoods = ""
 
 	c.JSON(200, gin.H{
-		"msg":   "success",
+		"msg":   "success" + msg,
 		"infor": good,
 		"user":  user,
 	})
