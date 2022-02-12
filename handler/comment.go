@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
@@ -86,7 +87,7 @@ func Getcomment(c *gin.Context) {
 //@Param comment body Description true "评论"
 //@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"give successfully"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/goods/comment [post]
 func Givecomment(c *gin.Context) {
 	var (
@@ -99,7 +100,8 @@ func Givecomment(c *gin.Context) {
 	userid, exists := c.MustGet("id").(string)
 
 	if err := c.ShouldBindJSON(&des); err != nil || !exists {
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("err")
 		return
 	}
 
@@ -115,7 +117,8 @@ func Givecomment(c *gin.Context) {
 
 	if cmt.GoodsID == -1 || err != nil {
 		//fmt.Println("2", cmt.GoodsID, err, ok)
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err)
 		return
 	}
 
@@ -124,7 +127,8 @@ func Givecomment(c *gin.Context) {
 
 	if ok := Average(c, re, goodsid); !ok {
 
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(ok)
 
 		return
 	}
@@ -137,7 +141,7 @@ func Average(c *gin.Context, re []tables.Comment, goodsid string) bool {
 	var sum = 0
 	id := easy.STI(goodsid)
 	if id == -1 {
-		return true
+		return false
 	}
 	if len(re) == 0 {
 		good.Scores = 0
@@ -148,5 +152,5 @@ func Average(c *gin.Context, re []tables.Comment, goodsid string) bool {
 	good.Scores = float64(sum) / float64(len(re))
 
 	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", id).Update("scores", good.Scores)
-	return false
+	return true
 }

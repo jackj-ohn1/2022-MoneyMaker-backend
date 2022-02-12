@@ -185,7 +185,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -261,7 +261,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -292,7 +292,7 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "原因 只需上传用户勾选的个数 内容不需要",
+                        "description": "只需上传用户勾选的个数 内容不需要",
                         "name": "reasonNum",
                         "in": "formData",
                         "required": true
@@ -306,7 +306,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -382,7 +382,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -392,7 +392,7 @@ var doc = `{
         },
         "/money/homepage": {
             "get": {
-                "description": "\"order=1-\u003e返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api\"",
+                "description": "\"主页的api\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -420,7 +420,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -430,7 +430,7 @@ var doc = `{
         },
         "/money/message": {
             "get": {
-                "description": "\"信息已根据时间按升序排列，id越大越新，消息通知的api\"",
+                "description": "\"消息通知的api\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -449,7 +449,10 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "error happened"
+                        "description": "msg\":\"error happened\",\"infor\":[]tables.Message}",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -484,7 +487,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -519,7 +522,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -548,7 +551,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -586,7 +589,10 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "error happened"
+                        "description": "msg\":\"error happened in server\"}",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -641,7 +647,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\",\"infor\":tables.User}",
+                        "description": "msg\":\"error happened in server\",\"infor\":tables.User}",
                         "schema": {
                             "type": "string"
                         }
@@ -679,7 +685,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -780,7 +786,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0.0",
-	Host:        "localhost:8080",
+	Host:        "119.3.133.235:8080",
 	BasePath:    "/api/vi",
 	Schemes:     []string{"http"},
 	Title:       "miniproject",

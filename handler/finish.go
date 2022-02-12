@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
@@ -79,7 +80,7 @@ func UnFinish(c *gin.Context) {
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"success"}
-//@Failure 500 "error happened"
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/my/goods/finish [get]
 func Finsh(c *gin.Context) {
 	var (
@@ -93,7 +94,8 @@ func Finsh(c *gin.Context) {
 	id, exists := c.MustGet("id").(string)
 
 	if !exists {
-		response.SendResponse(c, "error", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(exists)
 		return
 	}
 
@@ -104,7 +106,8 @@ func Finsh(c *gin.Context) {
 	num := easy.STI(goodsid)
 
 	if num == -1 {
-		response.SendResponse(c, "error", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(num)
 		return
 	}
 	//mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", re)

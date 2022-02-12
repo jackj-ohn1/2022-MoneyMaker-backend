@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
@@ -44,7 +45,8 @@ func Addgood(c *gin.Context) {
 
 	stuid, exists := c.MustGet("id").(string)
 	if !exists {
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("get错误")
 		return
 	}
 
@@ -58,7 +60,8 @@ func Addgood(c *gin.Context) {
 
 	tmp := easy.STI(price)
 	if tmp == -1 || err != nil {
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("STI错误")
 		return
 	}
 

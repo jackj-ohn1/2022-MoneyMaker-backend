@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
@@ -17,7 +18,7 @@ import (
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"cancel successfully"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/my/cancellation [post]
 func Cancelstar(c *gin.Context) {
 	var cart tables.Cart
@@ -31,7 +32,8 @@ func Cancelstar(c *gin.Context) {
 
 	err := mysql.DB.Model(&tables.Cart{}).Where("id=?", stuid).Update("goodsid", re).Error
 	if !exists || err != nil {
-		response.SendResponse(c, "error happened!", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err, exists)
 	}
 
 	response.SendResponse(c, "cancel successfully", 200)

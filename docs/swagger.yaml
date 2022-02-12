@@ -21,7 +21,7 @@ definitions:
     - id
     - password
     type: object
-host: localhost:8080
+host: 119.3.133.235:8080
 info:
   contact:
     email: 2105753640@qq.com
@@ -136,7 +136,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"用户对某个商品的评论"'
@@ -186,7 +186,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"商家下架商品"'
@@ -203,7 +203,7 @@ paths:
         name: goodsid
         required: true
         type: string
-      - description: 原因 只需上传用户勾选的个数 内容不需要
+      - description: 只需上传用户勾选的个数 内容不需要
         in: formData
         name: reasonNum
         required: true
@@ -216,7 +216,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"接收举报"'
@@ -266,7 +266,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"用户进行购买"'
@@ -276,7 +276,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: '"order=1->返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api"'
+      description: '"主页的api"'
       parameters:
       - description: 页码
         in: query
@@ -291,7 +291,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"主页内容"'
@@ -301,7 +301,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: '"信息已根据时间按升序排列，id越大越新，消息通知的api"'
+      description: '"消息通知的api"'
       produces:
       - application/json
       responses:
@@ -310,7 +310,9 @@ paths:
           schema:
             type: string
         "500":
-          description: error happened
+          description: msg":"error happened","infor":[]tables.Message}
+          schema:
+            type: string
       summary: '"返回用户购买、收藏后的信息"'
       tags:
       - Message
@@ -333,7 +335,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"取消收藏"'
@@ -356,7 +358,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"查看我的购物车"'
@@ -375,7 +377,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"查看我的橱窗"'
@@ -400,7 +402,9 @@ paths:
           schema:
             type: string
         "500":
-          description: error happened
+          description: msg":"error happened in server"}
+          schema:
+            type: string
       summary: '"商家完成订单"'
       tags:
       - Trade
@@ -437,7 +441,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened","infor":tables.User}
+          description: msg":"error happened in server","infor":tables.User}
           schema:
             type: string
       summary: '"返回我的信息"'
@@ -462,7 +466,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"新增收藏"'

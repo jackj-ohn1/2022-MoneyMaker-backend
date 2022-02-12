@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/base64"
+	"log"
 	model "miniproject/model/getstu"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
@@ -39,6 +40,7 @@ func Login(c *gin.Context) {
 		psd, err := base64.StdEncoding.DecodeString(user.Password)
 		if err != nil {
 			response.SendResponse(c, "fail to decode password", 500)
+			log.Println(err)
 			return
 		}
 
@@ -55,6 +57,8 @@ func Login(c *gin.Context) {
 		token, err := token.GenerateToken(user.ID)
 		if err != nil {
 			response.SendResponse(c, "token生成错误", 500)
+			log.Println(err)
+			return
 		}
 
 		mysql.Create(user.ID, stu.User.Name, string(psd))
@@ -68,6 +72,7 @@ func Login(c *gin.Context) {
 		psd, err := base64.StdEncoding.DecodeString(user.Password)
 		if err != nil {
 			response.SendResponse(c, "fail to decode password", 500)
+			log.Println(err)
 			return
 		}
 
@@ -75,6 +80,8 @@ func Login(c *gin.Context) {
 			token, err := token.GenerateToken(user.ID)
 			if err != nil {
 				response.SendResponse(c, "token生成错误", 500)
+				log.Println(err)
+				return
 			}
 
 			c.JSON(200, gin.H{

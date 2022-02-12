@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -27,10 +28,11 @@ func Search(c *gin.Context) {
 	page := c.DefaultQuery("page", "1")
 	num := easy.STI(page)
 	content := c.Request.FormValue("content")
-	err := mysql.DB.Order("feed_back asc").Order("scores desc").Where(fmt.Sprintf(`summary like "%%%s%%"`, content)).Find(&goods).Error
+	err := mysql.DB.Order("feed_back asc").Order("scores desc").Where(fmt.Sprintf(`summary like "%%%s%%" AND goodsin=%s`, content, "yes")).Find(&goods).Error
 
 	if err != nil || num == -1 {
 		response.SendResponse(c, "find nothing", 204)
+		log.Println(err)
 		return
 	}
 	for i := 0; i < len(goods); i++ {

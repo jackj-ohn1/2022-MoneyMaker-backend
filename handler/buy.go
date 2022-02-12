@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"miniproject/model"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -16,7 +17,7 @@ import (
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"success","way":"联系方式对应的url"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/goods/shopping [get]
 func Buy(c *gin.Context) {
 	//买完之后就展示联系方式，并把用户名字放在buyer中
@@ -31,7 +32,8 @@ func Buy(c *gin.Context) {
 	goodsid := easy.STI(goodsidstring)
 
 	if !exists || goodsid == -1 {
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("err")
 		return
 	}
 
@@ -49,7 +51,8 @@ func Buy(c *gin.Context) {
 	//mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", strstr)
 	err := model.UpdateGoodBuyer(goodsid, strstr)
 	if err != nil {
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err)
 		return
 	}
 
@@ -65,7 +68,8 @@ func Buy(c *gin.Context) {
 	//mysql.DB.Model(&tables.User{}).Where("id=?", stuid).Update("buygoods", strstr)
 	err = model.UpdateBuygoods(stuid, strstr)
 	if err != nil {
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err)
 		return
 	}
 

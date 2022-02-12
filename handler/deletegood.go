@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"fmt"
+	"log"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -17,7 +17,7 @@ import (
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
 //@Success 200 {string} {"msg":"delete successfully"}
-//@Failure 500 {string} {"msg":"error happened"}
+//@Failure 500 {string} {"msg":"error happened in server"}
 //@Router /money/goods/deletion [delete]
 func Deletegood(c *gin.Context) {
 	goodsstr := c.Query("goodsid")
@@ -26,8 +26,8 @@ func Deletegood(c *gin.Context) {
 	err := mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("goodsin", "no").Error
 
 	if goodsid == -1 || err != nil {
-		fmt.Println(goodsid, err)
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err, goodsid)
 		return
 	}
 

@@ -1,8 +1,8 @@
 package upload
 
 import (
-	"fmt"
 	"io"
+	"log"
 	"os"
 	"strconv"
 
@@ -12,22 +12,19 @@ import (
 func UploadAvatar(c *gin.Context, goodsid int) bool {
 	var way string
 
-	name := c.PostForm("name")
-	fmt.Println(name)
-
 	file, _, err := c.Request.FormFile("avatar")
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return false
 	}
 	//filename := header.Filename
 	//fmt.Println(file, err, filename)
 	//以goodsid作为名字
-	way = "./goods/avatar" + strconv.Itoa(goodsid) + ".jpg"
+	way = "./goods\\avatar\\" + strconv.Itoa(goodsid) + ".jpg"
 	tmp, err := os.Create(way) //如果文件已存在会清空
 
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return false
 	}
 
@@ -35,7 +32,7 @@ func UploadAvatar(c *gin.Context, goodsid int) bool {
 
 	_, err = io.Copy(tmp, file)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return false
 	}
 	//fmt.Println("存储成功")
@@ -45,22 +42,20 @@ func UploadAvatar(c *gin.Context, goodsid int) bool {
 func UploadWay(c *gin.Context, goodsid int) bool {
 	var way string
 
-	name := c.PostForm("name")
-	fmt.Println(name)
 	file, _, err := c.Request.FormFile("way")
 
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return false
 	}
 	//filename := header.Filename
 	//fmt.Println(file, err, filename)
 	//以goodsid作为名字
-	way = "./goods\\way" + strconv.Itoa(goodsid) + ".jpg"
+	way = "./goods\\way\\" + strconv.Itoa(goodsid) + ".jpg"
 
 	tmp, err := os.Create(way)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return false
 	}
 
@@ -68,7 +63,7 @@ func UploadWay(c *gin.Context, goodsid int) bool {
 
 	_, err = io.Copy(tmp, file)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return false
 	}
 	//fmt.Println("存储成功")

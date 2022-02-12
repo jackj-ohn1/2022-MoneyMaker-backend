@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
@@ -17,14 +18,15 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"check successfully","infot":[]tables.Good}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/my/goods [get]
 func Mygoods(c *gin.Context) {
 	var goods []tables.Good
 	id, exists := c.Get("id")
 	stuid, ok := id.(string)
 	if !ok || !exists {
-		response.SendResponse(c, "error happened!", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(ok, exists)
 		return
 	}
 	mysql.DB.Where("id=?", stuid).Find(&goods)
@@ -45,7 +47,7 @@ func Mygoods(c *gin.Context) {
 //@Produce application/json
 //@Success 200 {string} json{"msg":"check successfully","infot":[]tables.Good}
 //@Success 204 {string} json{"msg":"check successfully","infot":"nothing"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/my/cart [get]
 func Mycart(c *gin.Context) {
 	var (
@@ -57,7 +59,8 @@ func Mycart(c *gin.Context) {
 	stuid, exists := c.MustGet("id").(string)
 
 	if !exists {
-		response.SendResponse(c, "error happened!", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(exists)
 		return
 	}
 
@@ -92,14 +95,14 @@ func Mycart(c *gin.Context) {
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"avatar 是头像对应的url","infor":tables.User}
-//@Failure 500 {string} json{"msg":"error happened","infor":tables.User}
+//@Failure 500 {string} json{"msg":"error happened in server","infor":tables.User}
 //@Router /money/my/message [get]
 func Mymessage(c *gin.Context) {
 	var user tables.User
 
 	id, exists := c.MustGet("id").(string)
 	if !exists {
-		response.SendResponse(c, "return error!", 500)
+		response.SendResponse(c, "error happened in server!", 500)
 		return
 	}
 
