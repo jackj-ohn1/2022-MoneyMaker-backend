@@ -9,7 +9,7 @@ CREATE TABLE users(
     nickname VARCHAR(20),
     avatar VARCHAR(100),
     buygoods TEXT,
-    password VARCHAR(20)
+    password VARCHAR(200)
 );
 
 CREATE TABLE goods(
@@ -53,5 +53,5 @@ CREATE TABLE messages(
     id INT PRIMARY KEY AUTO_INCREMENT,
     buyer VARCHAR(10),
     my VARCHAR(10),
-    msg VARCHAR(30)
+    msg VARCHAR(100)
 )

@@ -5,8 +5,8 @@ import (
 	"log"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
-	easy "miniproject/pkg/easygo"
 	"miniproject/pkg/response"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,22 +16,33 @@ import (
 //@Tags Good
 //@Accept application/json
 //@Produce application/json
-//@Param content formData string true "搜索框输入的内容"
+//@Param content query string true "搜索框输入的内容"
 //@Param page query string true "页码"
-//@Success 200 {string} json{"msg":"search successfully","infor":[]tables.Good}
-//@Success 204 {string} json{"msg":"find nothing"}
+//@Success 200 {object} response.Resp "search successfully"
+//@Success 204 {object} response.Resp "find nothing"
 //@Router /money/search [post]
 func Search(c *gin.Context) {
 	//根据举报次数与评分进行优先返回
 	var goods []tables.Good
 
-	page := c.DefaultQuery("page", "1")
-	num := easy.STI(page)
-	content := c.Request.FormValue("content")
-	err := mysql.DB.Order("feed_back asc").Order("scores desc").Where(fmt.Sprintf(`summary like "%%%s%%" AND goodsin=%s`, content, "yes")).Find(&goods).Error
+	content := c.Query("content")
+	content = strings.Replace(content, " ", "", -1)
+	content = strings.Replace(content, "\n", "", -1)
+	content = strings.Replace(content, "\t", "", -1)
 
-	if err != nil || num == -1 {
-		response.SendResponse(c, "find nothing", 204)
+	if content != "" {
+		content_Slice := strings.Split(content, "")
+		content = "%"
+		for i := 0; i < len(content_Slice); i++ {
+			content = content + content_Slice[i] + "%"
+		}
+	}
+
+	fmt.Println(content)
+	err := mysql.DB.Order("feed_back asc").Order("goods_id desc").Where(fmt.Sprintf(`title like "%s" AND goodsin=%s`, content, "'yes'")).Find(&goods).Error
+
+	if err != nil {
+		response.SendResponse(c, "error happened", 500)
 		log.Println(err)
 		return
 	}
@@ -40,15 +51,22 @@ func Search(c *gin.Context) {
 	}
 	//这里不需要返回图片的url
 
-	if len(goods) < 10 {
-		c.JSON(200, gin.H{
-			"msg":   "success",
-			"goods": goods,
+	/*if len(goods) < 10 {
+		c.JSON(200, response.Resp{
+			Code: 200,
+			Msg:  "success",
+			Data: goods,
 		})
 	} else {
-		c.JSON(200, gin.H{
-			"msg":   "success",
-			"goods": goods[:num*10],
+		c.JSON(200, response.Resp{
+			Code: 200,
+			Msg:  "success",
+			Data: goods[:num*10],
 		})
-	}
+	}*/
+	c.JSON(200, response.Resp{
+		Code: 200,
+		Msg:  "success",
+		Data: goods,
+	})
 }

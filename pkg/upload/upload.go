@@ -1,7 +1,10 @@
 package upload
 
 import (
-	"io"
+	"encoding/base64"
+	"image"
+	"image/jpeg"
+	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
@@ -9,63 +12,60 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UploadAvatar(c *gin.Context, goodsid int) bool {
+func Upload(c *gin.Context, id int, which string, infor string) bool {
 	var way string
 
-	file, _, err := c.Request.FormFile("avatar")
+	file_str, err := base64.StdEncoding.DecodeString(infor)
 	if err != nil {
-		log.Println(err)
+		log.Println("解码失败")
 		return false
 	}
+
 	//filename := header.Filename
 	//fmt.Println(file, err, filename)
 	//以goodsid作为名字
-	way = "./goods\\avatar\\" + strconv.Itoa(goodsid) + ".jpg"
-	tmp, err := os.Create(way) //如果文件已存在会清空
+	way = "./goods/" + which + "/" + strconv.Itoa(id) + ".jpg"
 
+	err = ioutil.WriteFile(way, file_str, 0777)
 	if err != nil {
-		log.Println(err)
+		log.Println(err, "存储失败")
 		return false
 	}
 
-	defer tmp.Close()
-
-	_, err = io.Copy(tmp, file)
-	if err != nil {
-		log.Println(err)
-		return false
-	}
 	//fmt.Println("存储成功")
+	err = CompressImg(way)
+	if err != nil {
+		log.Println(err, "压缩失败")
+		return false
+	}
 	return true
 }
 
-func UploadWay(c *gin.Context, goodsid int) bool {
-	var way string
-
-	file, _, err := c.Request.FormFile("way")
-
-	if err != nil {
-		log.Println(err)
-		return false
-	}
-	//filename := header.Filename
-	//fmt.Println(file, err, filename)
-	//以goodsid作为名字
-	way = "./goods\\way\\" + strconv.Itoa(goodsid) + ".jpg"
-
-	tmp, err := os.Create(way)
-	if err != nil {
-		log.Println(err)
-		return false
+func CompressImg(source string) error {
+	var err error
+	var file *os.File
+	if file, err = os.Open(source); err != nil {
+		log.Println(err, "压缩1")
+		return err
 	}
 
-	defer tmp.Close()
-
-	_, err = io.Copy(tmp, file)
-	if err != nil {
-		log.Println(err)
-		return false
+	defer file.Close()
+	var img image.Image
+	if img, err = jpeg.Decode(file); err != nil {
+		log.Println(err, "压缩2")
+		return err
 	}
-	//fmt.Println("存储成功")
-	return true
+
+	if outFile, err := os.Create(source); err != nil {
+		log.Println(err, "压缩3")
+		return err
+	} else {
+		defer outFile.Close()
+		err = jpeg.Encode(outFile, img, &jpeg.Options{Quality: 20})
+		if err != nil {
+			log.Println(err, "压缩4")
+			return err
+		}
+	}
+	return nil
 }

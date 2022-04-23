@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"miniproject/model"
 	"miniproject/model/mysql"
@@ -17,59 +18,91 @@ type Two struct {
 	Buyer []string
 }
 
+type ReturnType struct {
+	Strbuy  []tables.Good `json:"buy"`
+	Strsell []Two         `json:"sell"`
+}
+
 //@Summary "返回用户与卖家未完成的订单"
 //@Description "返回订单,需要点完成的是‘my sell’->[]string 是与我做交易的人的id,因为一个商品可能被多个人购买，所以string切片的长度就是‘完成订单’的订单数,点评价的是‘my buy’"
 //@Tags Trade
 //@Accept application/json
 //@Produce application/json
-//@Success 200 {string} json{"msg":"success","my buy":[]tables.Good,"my sell":[]Two}
-//@Failure 500 {string} json{"error happened"}
-//@Router /money/my/goods/unfish [get]
+//@Success 200 {object} response.Resp "success"
+//@Failure 500 {object} response.Resp "error happened"
+//@Router /money/my/goods/unfinish [get]
 func UnFinish(c *gin.Context) {
 	var (
 		goods   []tables.Good
 		user    tables.User
-		good    tables.Good
 		strbuy  []tables.Good
 		strsell []Two
 		two     Two
+		max     int
+		hasbuy  []string
 	)
 
 	id, exists := c.MustGet("id").(string)
 	if !exists {
 		//fmt.Println("1", exists, ok)
-		response.SendResponse(c, "error", 500)
+		response.SendResponse(c, "unauthorized", 401)
 		return
 	}
 	//确认完成
-	//获取我已购买我发布的商品的用户的id,可能不止一个商品,mysell
-	mysql.DB.Model(&tables.Good{}).Select("price", "title", "goods_id", "buyer").Where("id=?", id).Find(&goods)
-
-	for _, v := range goods {
-		buyer := strings.Split(v.Buyer, ",")
+	//获取已购买我发布的商品的用户的id,可能不止一个商品,mysell
+	mysql.DB.Model(&tables.Good{}).Select("price", "title", "goods_id", "buyer", "id", "goodsin").Where("id=?", id).Find(&goods)
+	a := len(goods)
+	for i := a - 1; i >= 0; i-- {
+		if goods[i].Goodsin == "no" {
+			continue
+		}
+		buyer := strings.Split(goods[i].Buyer, ",")
 		two.Buyer = buyer
-		two.Good = v
+		two.Good = goods[i]
 		strsell = append(strsell, two)
+		//fmt.Println(two)
 	}
 
-	//评价
+	//我买入的
 	mysql.DB.Where("id=?", id).Find(&user)
-	hasbuy := strings.Split(user.Buygoods, ",")
+	if user.Buygoods == "" {
+		max = 0
+	} else {
+		hasbuy = strings.Split(user.Buygoods, ",")
+		fmt.Println(hasbuy)
+		max = len(hasbuy)
+	}
 
-	for _, v := range hasbuy {
-		num := easy.STI(v)
+	if max == 0 {
+		c.JSON(200, response.Resp{
+			Data: strsell,
+			Msg:  "success",
+			Code: 200,
+		})
+		return
+	}
+	for i := max - 1; i >= 0; i-- {
+		num := easy.STI(hasbuy[i])
 		if num == -1 {
+			log.Println("for")
 			response.SendResponse(c, "error", 500)
 			return
 		} else {
-			mysql.DB.Model(&tables.Good{}).Select("price", "title", "goods_id").Where("goods_id=?", num).Find(&good)
+			var good tables.Good
+			mysql.DB.Model(&tables.Good{}).Select("price", "title", "goods_id", "id", "goodsin").Where("goods_id=?", num).Find(&good)
+			if good.Goodsin == "no" {
+				continue
+			}
 			strbuy = append(strbuy, good)
 		}
 	}
-	c.JSON(200, gin.H{
-		"msg":     "success",
-		"my buy":  strbuy,
-		"my sell": strsell,
+	c.JSON(200, response.Resp{
+		Data: ReturnType{
+			Strbuy:  strbuy,
+			Strsell: strsell,
+		},
+		Msg:  "success",
+		Code: 200,
 	})
 }
 
@@ -79,8 +112,8 @@ func UnFinish(c *gin.Context) {
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
-//@Success 200 {string} json{"msg":"success"}
-//@Failure 500 {string} json{"msg":"error happened in server"}
+//@Success 200 {object} response.Resp "success"
+//@Failure 500 {object} response.Resp "error happened in server"
 //@Router /money/my/goods/finish [get]
 func Finsh(c *gin.Context) {
 	var (
@@ -119,7 +152,9 @@ func Finsh(c *gin.Context) {
 	//mysql.DB.Model(&tables.User{}).Where("id=?", id).Update("buygoods", re)
 	model.UpdateBuygoods(id, re)
 
-	c.JSON(200, gin.H{
-		"msg": "success",
+	c.JSON(200, response.Resp{
+		Code: 200,
+		Msg:  "successfully",
+		Data: nil,
 	})
 }

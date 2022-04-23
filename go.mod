@@ -5,8 +5,8 @@ go 1.17
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.7
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/swaggo/gin-swagger v1.4.0
-	github.com/swaggo/swag v1.7.8
 	golang.org/x/net v0.0.0-20220114011407-0dd24b26b47d
 	gorm.io/driver/mysql v1.2.3
 	gorm.io/gorm v1.22.5
@@ -36,6 +36,7 @@ require (
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/swaggo/swag v1.7.8 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
 	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce // indirect
 	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect

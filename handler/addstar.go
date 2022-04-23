@@ -7,7 +7,6 @@ import (
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
 	"miniproject/pkg/response"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,16 +16,17 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品的编号"
-//@Success 200 {string} json{"msg":"add successfully" "msg":"你已经收藏过该商品了"}
-//@Failure 500 {string} json{"msg":"error happened in server"}
-//@Router /money/new_star [patch]
+//@Success 200 {object} response.Resp "add successfully" or "你已经收藏过该商品了"
+//@Failure 500 {object} response.Resp "error happened in server"
+//@Failure 304 {object} response.Resp "error in database"
+//@Router /money/my/new_star [patch]
 func Addstar(c *gin.Context) {
 	//用户收藏后在cart里就会新增这个商品的goodsid
 	var (
 		cart tables.Cart
 		re   string
 		good tables.Good
-		ok   bool
+		ok = true
 	)
 
 	stuid, exists := c.MustGet("id").(string)
@@ -37,12 +37,18 @@ func Addstar(c *gin.Context) {
 	}
 
 	//mysql.DB.Where("id=?", stuid).Find(&cart)
-	cart = model.GetOrderCart(stuid)
+	cart, err := model.GetOrderCart(stuid)
+	// fmt.Println("cart:",cart)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "error in database", 304)
+	}
 	if cart.Goodsid != "" {
 		re, ok = easy.NewSingle(cart.Goodsid, goodsid)
 	} else {
 		re = re + goodsid
 	}
+	// fmt.Println("after:",re)
 
 	if ok {
 		err := mysql.DB.Model(&tables.Cart{}).Where("id=?", stuid).Update("goodsid", re).Error
@@ -61,10 +67,14 @@ func Addstar(c *gin.Context) {
 	}
 
 	//mysql.DB.Where("goods_id=?", goodsidint).Find(&good)
-	good = model.GetOrderGood(goodsidInt)
+	good, err = model.GetOrderGood(goodsidInt)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "error in database", 304)
+	}
 
 	//保存信息
-	easy.Returnstar(stuid, good.ID)
+	easy.Returnstar(stuid, good.ID,true)
 
 	if ok {
 		response.SendResponse(c, "add successfully!", 200)

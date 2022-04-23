@@ -30,7 +30,7 @@ func Router() *gin.Engine {
 			groupgoods.POST("/comment", handler.Givecomment) //ok
 
 			//进行举报
-			groupgoods.PUT("/feedback", handler.Feedback) //ok
+			groupgoods.POST("/feedback", handler.Feedback) //ok
 
 			//下架商品
 			groupgoods.DELETE("/deletion", handler.Deletegood) //ok
@@ -39,10 +39,13 @@ func Router() *gin.Engine {
 			groupgoods.POST("/addition", handler.Addgood) //ok
 
 			//购买商品
-			groupgoods.POST("/shopping", handler.Buy) //ok
+			groupgoods.GET("/shopping", handler.Buy) //ok
 
 			//商品详情页
 			groupgoods.GET("/scanning", handler.Scan) //ok
+
+			//消息通知
+			groupgoods.GET("/message", handler.Returnmsg) //ok
 		}
 
 		groupmy := group.Group("/my")
@@ -66,7 +69,13 @@ func Router() *gin.Engine {
 			groupmy.GET("/goods/unfinish", handler.UnFinish) //ok
 
 			//确认完成
-			groupmy.POST("/goods/finish", handler.Finsh) //ok
+			groupmy.GET("/goods/finish", handler.Finsh) //ok
+
+			// 修改昵称
+			groupmy.PUT("/name", handler.ChangeNickname)
+
+			// 修改头像
+			groupmy.POST("/avatar", handler.ChangeAvatar)
 		}
 
 		//根据内容对商品的summary搜索
@@ -75,12 +84,8 @@ func Router() *gin.Engine {
 		//主页推送
 		group.GET("/homepage", handler.Homepage) //ok
 
-		//消息通知
-		group.GET("/message", handler.Returnmsg) //ok
 	}
 	//购买后返回联系方式的接口
-	router.StaticFS("/images/way", http.Dir("./goods\\way"))
-	//查看商品时，返回的图片
-	router.StaticFS("/images/avatar", http.Dir("./goods\\avatar"))
+	router.StaticFS("/images", http.Dir("./goods"))
 	return router
 }

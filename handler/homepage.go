@@ -4,7 +4,6 @@ import (
 	"log"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
-	easy "miniproject/pkg/easygo"
 	"miniproject/pkg/response"
 
 	"github.com/gin-gonic/gin"
@@ -16,19 +15,17 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param page query string true "页码"
-//@Success 200 {string} json{"msg":"success","infor":[]tables.Good}
-//@Success 500 {string} json{"msg":"error happened in server"}
+//@Success 200 {object} response.Resp "success"
+//@Success 500 {object} response.Resp "error happened in server"
 //@Router /money/homepage [get]
 func Homepage(c *gin.Context) {
 	var goods []tables.Good
 
-	page := c.DefaultQuery("page", "1")
-	num := easy.STI(page)
-	err := mysql.DB.Order("feed_back desc").Order("scores desc").Where("goodsin=?", "yes").Find(&goods).Error
-
-	if err != nil || num == -1 {
+	err := mysql.DB.Order("feed_back desc").Order("goods_id desc").Where("goodsin=?", "yes").Find(&goods).Error
+	// mysql.DB.Limit(10).Offset((num-1)*10).Order("feed_back desc").Order("scores desc").Where("goodsin=? AND goods_id>? ", "yes","1").Find(&goods).Error
+	if err != nil {
 		response.SendResponse(c, "error happened in server", 500)
-		log.Println(err, num)
+		log.Println(err)
 		return
 	}
 
@@ -36,15 +33,9 @@ func Homepage(c *gin.Context) {
 		goods[i].Way = ""
 	}
 
-	if len(goods) < 10 {
-		c.JSON(200, gin.H{
-			"msg":   "success",
-			"goods": goods,
-		})
-	} else {
-		c.JSON(200, gin.H{
-			"msg":   "success",
-			"goods": goods[:num*10],
-		})
-	}
+	c.JSON(200, response.Resp{
+		Code: 200,
+		Msg:  "successfully",
+		Data: goods,
+	})
 }

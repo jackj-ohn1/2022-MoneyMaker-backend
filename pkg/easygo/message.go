@@ -5,14 +5,20 @@ import (
 	"miniproject/model/tables"
 )
 
-func Returnstar(buyer string, owner string) {
+func Returnstar(buyer string, owner string,ok bool) {
 	var msg tables.Message
+	if ok {
+		msg.Buyer = buyer
+		msg.My = owner
+		msg.Msg = buyer + "收藏了你的商品"
 
-	msg.Buyer = buyer
-	msg.My = owner
-	msg.Msg = buyer + "收藏了你的商品"
-
-	mysql.DB.Create(&msg)
+		mysql.DB.Create(&msg)
+	}else{
+		msg.Buyer = buyer
+		msg.My = owner
+		msg.Msg = buyer + "取消收藏了你的商品"
+		mysql.DB.Create(&msg)
+	}
 }
 
 func Returnbuy(buyer string, owner string) {

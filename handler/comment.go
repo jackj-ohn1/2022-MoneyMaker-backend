@@ -25,8 +25,12 @@ type All struct {
 }
 
 type Description struct {
-	Score   int    `json:"score" binding:"required"`
 	Comment string `json:"comment" binding:"required"`
+}
+
+type ReturnComment struct {
+	Comment []tables.Comment `json:"comment"`
+	All     All              `json:"all"`
 }
 
 //@Summary "获取某个商品的所有评论"
@@ -35,8 +39,9 @@ type Description struct {
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
-//@Success 200 {string} {"infor":[]tables.Comment,"score":All}
-//@Failure 500 {string} json{"msg":"err"}
+//@Success 200 {object} response.Resp "successfully"
+//@Failure 500 {object} response.Resp "error in the server"
+//@Failure 304 {object} response.Resp "nothing"
 //@Router /money/goods/comments [get]
 func Getcomment(c *gin.Context) {
 	//先获取goodsid
@@ -51,7 +56,12 @@ func Getcomment(c *gin.Context) {
 	}
 
 	//mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", goodsid).Find(&re)
-	re = model.GetGoodComment(goodsid)
+	re, err = model.GetGoodComment(goodsid)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "nothing", 304)
+		return
+	}
 
 	for i := 0; i < len(re); i++ {
 		all.Sum += re[i].Score
@@ -72,11 +82,22 @@ func Getcomment(c *gin.Context) {
 	all.Person = len(re)
 	//fmt.Println(all)
 	//若果要返回一个自定义结构体，那么它的字段应该要大写，否则会无法识别
-	c.JSON(200, gin.H{
-		"infor":  re,
-		"scores": all,
-		"msg":    "success",
-	})
+	if len(re) != 0 {
+		c.JSON(200, response.Resp{
+			Code: 200,
+			Msg:  "get successfully",
+			Data: ReturnComment{
+				Comment: re,
+			},
+		})
+	} else {
+		c.JSON(200, response.Resp{
+			Code: 200,
+			Msg:  "get successfully",
+			Data: nil,
+		})
+	}
+
 }
 
 //@Summary "用户对某个商品的评论"
@@ -86,8 +107,9 @@ func Getcomment(c *gin.Context) {
 //@Produce application/json
 //@Param comment body Description true "评论"
 //@Param goodsid query string true "商品编号"
-//@Success 200 {string} json{"msg":"give successfully"}
-//@Failure 500 {string} json{"msg":"error happened in server"}
+//@Success 200 {object} response.Resp "give successfully"
+//@Failure 500 {object} response.Resp "error happened in server"
+//@Failure 500 {object} response.Resp "error in database"
 //@Router /money/goods/comment [post]
 func Givecomment(c *gin.Context) {
 	var (
@@ -99,9 +121,14 @@ func Givecomment(c *gin.Context) {
 	goodsid := c.Query("goodsid")
 	userid, exists := c.MustGet("id").(string)
 
-	if err := c.ShouldBindJSON(&des); err != nil || !exists {
+	if !exists {
+		response.SendResponse(c, "unthorized", 401)
+		return
+	}
+
+	if err := c.ShouldBindJSON(&des); err != nil {
 		response.SendResponse(c, "error happened in server", 500)
-		log.Println("err")
+		log.Println("err", des)
 		return
 	}
 
@@ -111,7 +138,7 @@ func Givecomment(c *gin.Context) {
 	cmt.ID = userid
 	cmt.GoodsID = easy.STI(goodsid)
 	cmt.Givetime = tm
-	cmt.Score = des.Score
+	//cmt.Score = des.Score
 	cmt.Comment = des.Comment
 	err := mysql.DB.Create(&cmt).Error
 

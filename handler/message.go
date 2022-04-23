@@ -14,9 +14,9 @@ import (
 //@Tags Message
 //@Accept application/json
 //@Produce application/json
-//@Success 200 {string} json{"msg":"success","infor":[]tables.Message}
-//@Failure 500 {string} json{"msg":"error happened","infor":[]tables.Message}
-//@Router /money/message [get]
+//@Success 200 {object} response.Resp "success"
+//@Failure 500 {object} response.Resp "error happened in the server"
+//@Router /money/goods/message [get]
 func Returnmsg(c *gin.Context) {
 	var msgs []tables.Message
 	id, exists := c.MustGet("id").(string)
@@ -28,8 +28,9 @@ func Returnmsg(c *gin.Context) {
 
 	mysql.DB.Order("id desc").Where("my=?", id).Find(&msgs)
 
-	c.JSON(200, gin.H{
-		"msg":   "success",
-		"infor": msgs,
+	c.JSON(200, response.Resp{
+		Code: 200,
+		Msg:  "get successfully",
+		Data: msgs,
 	})
 }

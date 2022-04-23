@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"fmt"
+	"log"
 	"miniproject/config"
 	"miniproject/model/tables"
 	"miniproject/pkg/avatar"
@@ -12,22 +13,29 @@ import (
 
 //防止第一个新增商品出现错误
 func DataInit() {
+	var user tables.User
+	err := DB.Model(tables.User{}).Where("id=?", "0").Take(&user).Error
 
-	DB.Model(tables.User{}).Create(map[string]interface{}{
-		"id": "0",
-	})
-	fmt.Println("user已初始化")
+	if err != nil {
+		DB.Model(tables.User{}).Create(map[string]interface{}{
+			"id": "0",
+		})
+		fmt.Println("user已初始化")
 
-	DB.Model(&tables.Good{}).Create(map[string]interface{}{
-		"goods_id": 0,
-		//"price":    0,
-	})
-	fmt.Println("goods已初始化")
+		DB.Model(&tables.Good{}).Create(map[string]interface{}{
+			"goods_id": 0,
+			"goodsin":  "no",
+			//"price":    0,
+		})
+		fmt.Println("goods已初始化")
 
-	DB.Model(&tables.Message{}).Create(map[string]interface{}{
-		"id": 0,
-	})
-	fmt.Println("message已初始化")
+		DB.Model(&tables.Message{}).Create(map[string]interface{}{
+			"id": 0,
+		})
+		fmt.Println("message已初始化")
+	} else {
+		log.Println("已经完成过初始化")
+	}
 
 }
 
